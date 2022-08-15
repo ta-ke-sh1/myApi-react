@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter as Router, useRoutes} from "react-router-dom";
+import {useState} from "react";
+import Login from "./components/login.js";
+import AdminHomepage from './components/adminHomepage'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function setToken(userToken){
+    sessionStorage.setItem('access_token', JSON.stringify(userToken.access_token));
+    sessionStorage.setItem('refresh_token', JSON.stringify(userToken.refresh_token));
 }
 
-export default App;
+function getToken(){
+
+}
+
+const App = () => {
+    return useRoutes([
+        {path: "/login", element: <Login/>},
+        {path: "/users", element: <AdminHomepage/>}
+    ]);
+};
+
+const AppWrapper = () => {
+    const [token, setToken] = useState({
+        access_token: null,
+        refresh_token: null
+    });
+
+    if(!token){
+        return <Login setToken={setToken} />
+    }
+
+    return (
+        <Router>
+            <App/>
+        </Router>
+    );
+};
+
+export default AppWrapper;
