@@ -1,32 +1,28 @@
 import {BrowserRouter as Router, useRoutes} from "react-router-dom";
-import {useState} from "react";
 import Login from "./components/login.js";
 import AdminHomepage from './components/adminHomepage'
-
-function setToken(userToken){
-    sessionStorage.setItem('access_token', JSON.stringify(userToken.access_token));
-    sessionStorage.setItem('refresh_token', JSON.stringify(userToken.refresh_token));
-}
-
-function getToken(){
-
-}
+import useToken from "./components/useToken";
 
 const App = () => {
     return useRoutes([
-        {path: "/login", element: <Login/>},
-        {path: "/users", element: <AdminHomepage/>}
+        {path: "/", element: <AdminHomepage/>}
     ]);
 };
 
-const AppWrapper = () => {
-    const [token, setToken] = useState({
-        access_token: null,
-        refresh_token: null
-    });
+const getToken = () =>{
+    const accessString = "Bearer " + localStorage.getItem('access_token');
+    const refreshString = "Bearer " + localStorage.getItem('refresh_token');
+    const userToken = {
+        access_token: accessString,
+        refresh_token: refreshString
+    };
+    return userToken?.token
+}
 
-    if(!token){
-        return <Login setToken={setToken} />
+const AppWrapper = () => {
+    const { token, setToken } = useToken();
+    if (token.access_token.endsWith("null") || token.refresh_token.endsWith("null")) {
+        return <Login setToken={setToken}/>
     }
 
     return (

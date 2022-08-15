@@ -22,11 +22,8 @@ export default function Login({ setToken }){
             username,
             password
         })
-        console.log(token)
-        setToken({
-            access_token: token.access_token,
-            refresh_token: token.refresh_token
-        });
+        console.log(token);
+        setToken(token);
     }
     return(
         <div className='form-container'>
@@ -44,6 +41,5 @@ export default function Login({ setToken }){
 
 
 Login.propTypes = {
-    setAccessToken: PropTypes.func.isRequired,
-    setRefreshToken: PropTypes.func.isRequired
+    setToken: PropTypes.func.isRequired
 }
