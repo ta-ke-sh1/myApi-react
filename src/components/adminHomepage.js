@@ -24,6 +24,16 @@ export default class AdminHomepage extends React.Component {
         this.setState({users: usersList});
     }
 
+    async handleDelete(userId){
+            await fetch('http://localhost:8080/user/delete/' + userId, {
+                headers: {'Authorization': "Bearer " + localStorage.getItem("access_token").slice(1, -1)}
+            } ).then(
+            ).catch((error) => {
+                console.log(error);
+            })
+
+    }
+
     render() {
         const {users} = this.state;
         return (
@@ -51,6 +61,7 @@ export default class AdminHomepage extends React.Component {
                              email={user.email}
                              dob={user.dob}
                              roles={user.roles}
+                             handleDelete = {this.handleDelete(user.userId)}
                     />
                 )}
                 </tbody>
@@ -78,7 +89,7 @@ const UserRow = (props) => {
                 <a href="/edit">
                     <div>Edit</div>
                 </a>
-                <a href="/delete">
+                <a href="/delete" onClick={props.handleDelete(props.userId)}>
                     <div>Delete</div>
                 </a>
             </td>
