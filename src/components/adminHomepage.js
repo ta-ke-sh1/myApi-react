@@ -1,73 +1,85 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
-export default class AdminHomepage extends React.Component {
-    constructor(props) {
-        super(props);
+export default function AdminHomepage() {
+    const [users, setUsers] = useState([]);
+    const navigate = useNavigate();
 
-        this.state = {
-            users: []
-        }
-    }
-
-    async componentDidMount() {
-        const usersList = await fetch('http://localhost:8080/user', {
+    const getData = async () => {
+        let list = {}
+        await axios.get('http://localhost:8080/user', {
             headers: {'Authorization': "Bearer " + localStorage.getItem("access_token").slice(1, -1)}
+        }).then(function (response) {
+            console.log(response)
+            list = response.data;
+        }).catch(function (error) {
+            console.log(error.response.data);
+            if (error.response.status === 403) {
+                console.log(error.response.status)
+                navigate('/login');
+            }
+        });
+        setUsers(list);
+    }
+
+    useEffect(() => {
+        getData().then(() => {
+            console.log("Data fetched successfully")
+        });
+    }, []);
+
+    async function handleDelete(event, userId) {
+        event.preventDefault();
+        await fetch('http://localhost:8080/user/delete/' + userId, {
+            headers: {'Authorization': "Bearer " + localStorage.getItem("access_token").slice(1, -1)}
+        }).then(
+        ).catch((error) => {
+            console.log(error);
         })
-            .then(data => data.json())
-            .catch((error) => {
-                if(error.response.status === 403){
-                    const navigate = useNavigate();
-                    navigate("/login");
-                }
-            })
-        this.setState({users: usersList});
     }
 
-    async handleDelete(userId){
-            await fetch('http://localhost:8080/user/delete/' + userId, {
-                headers: {'Authorization': "Bearer " + localStorage.getItem("access_token").slice(1, -1)}
-            } ).then(
-            ).catch((error) => {
-                console.log(error);
-            })
+    async function handleManage(event, userId) {
+        console.log(userId)
+        event.preventDefault();
+        navigate("/user/details/", {
+            state: {userId}
+        })
 
     }
 
-    render() {
-        const {users} = this.state;
-        return (
-            <table>
-                <tbody>
-                <tr>
-                    <th>Username</th>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>Email</th>
-                    <th>Date of Birth</th>
-                    <th>Roles</th>
-                    <th>Options</th>
-                </tr>
-                {users.map(user =>
-                    <UserRow key={user.userId}
-                             userId={user.userId}
-                             username={user.username}
-                             firstName={user.firstName}
-                             lastName={user.lastName}
-                             phone={user.phone}
-                             address={user.address}
-                             email={user.email}
-                             dob={user.dob}
-                             roles={user.roles}
-                             handleDelete = {this.handleDelete(user.userId)}
-                    />
-                )}
-                </tbody>
-            </table>
-        )
-    }
+    return (
+        <table>
+            <tbody>
+            <tr>
+                <th>Username</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Date of Birth</th>
+                <th>Roles</th>
+                <th>Options</th>
+            </tr>
+            {users.map(user =>
+                <UserRow key={user.userId}
+                         userId={user.userId}
+                         username={user.username}
+                         firstName={user.firstName}
+                         lastName={user.lastName}
+                         phone={user.phone}
+                         address={user.address}
+                         email={user.email}
+                         dob={user.dob}
+                         roles={user.roles}
+                         handleManage = {(e) => handleManage(e, user.userId)}
+                         handleDelete = {(e) => handleDelete(e, user.userId)}
+                />
+            )}
+            </tbody>
+        </table>
+    )
 }
 
 const UserRow = (props) => {
@@ -86,12 +98,12 @@ const UserRow = (props) => {
                 )}
             </td>
             <td>
-                <a href="/edit">
-                    <div>Edit</div>
-                </a>
-                <a href="/delete" onClick={props.handleDelete(props.userId)}>
-                    <div>Delete</div>
-                </a>
+                <button onClick={(e) => props.handleManage(e)}>
+                    Manage
+                </button>
+                <button onClick={(e) => props.handleDelete(e)}>
+                    Delete
+                </button>
             </td>
         </tr>
     )
