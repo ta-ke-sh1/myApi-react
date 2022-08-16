@@ -1,13 +1,83 @@
-.form {
-  width: 250px;
-  display: flex;
-  flex-direction: column;
-}
 
 .form-container {
-  height: 95vh;
-  width: 95vw;
-  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: fit-content;
+  border: 1px solid gray;
+  border-radius: 20px;
+  transform: translate(-50%, -50%);
   justify-content: center;
   align-items: center;
+  padding: 30px 40px;
+
+  input{
+    width: 420px;
+    height: 25px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid dimgray;
+
+    &:focus{
+      border: none;
+    }
+  }
+
+  select{
+    width: 425px;
+    height: 30px;
+    transition-duration: 0.3s;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+
+  input[type='submit']{
+    width: 425px;
+    height: 30px;
+    background-color: coral;
+    border: none;
+    transition-duration: 0.3s;
+    border-radius: 5px;
+    margin-top: 15px;
+    font-family: 'Open Sans', serif;
+    font-size: 16px;
+
+     &:hover{
+       background-color: crimson;
+       color: white;
+     }
+  }
+}
+
+button{
+  width: fit-content;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 5px;
+  min-width: 100px;
+  transition-duration: 0.3s;
+  border: none;
+
+  &:hover{
+    background-color: gray;
+    color: white;
+  }
+}
+
+.manage{
+  background-color: dodgerblue;
+  &:hover{
+    background-color: mediumaquamarine;
+    color: white;
+  }
+}
+
+.delete{
+  background-color: crimson;
+  &:hover{
+    background-color: coral;
+    color: white;
+  }
 }

@@ -48,11 +48,14 @@ export default function Login() {
     return (
         <div className='form-container'>
             <label>Username</label>
+            <br/>
             <input type={"text"} id="username" name={"username"} onChange={e => setUsername(e.target.value)}/> <br/>
             <label>Password</label>
+            <br/>
             <input type={"password"} id="password" name={"password"} onChange={e => setPassword(e.target.value)}/> <br/>
-            <label>Not an user? <a href="/register">Register here!</a></label> <br/>
+            <label>Forgot password? <a href="/recover">Recover it!</a></label> <br/>
             <input type={"submit"} value={"Login"} onClick={handleSubmit}/> <br/>
+            <label>Not an user? <a href="/register">Register here!</a></label> <br/>
         </div>
     )
 }

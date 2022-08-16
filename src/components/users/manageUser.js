@@ -76,7 +76,7 @@ export default function ManageUser() {
     }
 
     return (
-        <div>
+        <div className={"form-container"}>
             <label htmlFor="">First Name</label><br />
             <input type="text" name="firstName" id="firstName" onChange={(event) => setFirstName(event.target.value)} />
             <br />
@@ -95,6 +95,7 @@ export default function ManageUser() {
             <label htmlFor="">Date of Birth</label><br />
             <input type="date" name="dob" id="dob" onChange={(event) => setDob(event.target.value)}  />
             <br />
+            <label htmlFor="">Select a role</label><br />
             <select name="role" id="role" value={role} onChange={(event) => handleRole(event)}  >
                 <option value={roles[0]}>User</option>
                 <option value={roles[1]}>Admin</option>

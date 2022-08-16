@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import RefreshToken from "./useToken";
 
 export default function AdminHomepage() {
     const [users, setUsers] = useState([]);
@@ -48,43 +49,50 @@ export default function AdminHomepage() {
 
     }
 
+    const parseDate = (dob) => {
+        return dob.join("/");
+    }
+
     return (
-        <table>
-            <tbody>
-            <tr>
-                <th>Username</th>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Phone</th>
-                <th>Address</th>
-                <th>Email</th>
-                <th>Date of Birth</th>
-                <th>Roles</th>
-                <th>Options</th>
-            </tr>
-            {users.map(user =>
-                <UserRow key={user.userId}
-                         userId={user.userId}
-                         username={user.username}
-                         firstName={user.firstName}
-                         lastName={user.lastName}
-                         phone={user.phone}
-                         address={user.address}
-                         email={user.email}
-                         dob={user.dob}
-                         roles={user.roles}
-                         handleManage = {(e) => handleManage(e, user.userId)}
-                         handleDelete = {(e) => handleDelete(e, user.userId)}
-                />
-            )}
-            </tbody>
-        </table>
+        <div className={"container"}>
+            <RefreshToken/>
+            <table className={"table"}>
+                <tbody>
+                <tr className={"table-row"}>
+                    <th>Username</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Email</th>
+                    <th>Date of Birth</th>
+                    <th>Roles</th>
+                    <th>Options</th>
+                </tr>
+                {users.map(user =>
+                    <UserRow key={user.userId}
+                             userId={user.userId}
+                             username={user.username}
+                             firstName={user.firstName}
+                             lastName={user.lastName}
+                             phone={user.phone}
+                             address={user.address}
+                             email={user.email}
+                             dob={parseDate(user.dob)}
+                             roles={user.roles}
+                             handleManage = {(e) => handleManage(e, user.userId)}
+                             handleDelete = {(e) => handleDelete(e, user.userId)}
+                    />
+                )}
+                </tbody>
+            </table>
+        </div>
     )
 }
 
 const UserRow = (props) => {
     return (
-        <tr key={props.userId}>
+        <tr key={props.userId} className={"table-row"}>
             <td>{props.username}</td>
             <td>{props.firstName}</td>
             <td>{props.lastName}</td>
@@ -98,10 +106,10 @@ const UserRow = (props) => {
                 )}
             </td>
             <td>
-                <button onClick={(e) => props.handleManage(e)}>
+                <button className={"manage"} onClick={(e) => props.handleManage(e)}>
                     Manage
-                </button>
-                <button onClick={(e) => props.handleDelete(e)}>
+                </button> <br/>
+                <button className={"delete"} onClick={(e) => props.handleDelete(e)}>
                     Delete
                 </button>
             </td>

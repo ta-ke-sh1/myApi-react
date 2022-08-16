@@ -1,0 +1,22 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+body{
+  margin-top: 50px;
+  font-family: 'Open Sans', serif;
+}
+
+a{
+  text-decoration: none;
+  color: coral;
+  transition-duration: 0.3s;
+
+  &:hover{
+    color: crimson;
+  }
+}
+
+.table td{
+  position: relative;
+  padding: 15px;
+  border-top: 1px solid black;
+}

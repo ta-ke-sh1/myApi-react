@@ -1,0 +1,34 @@
+.nav-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: coral;
+
+  a{
+    color: white;
+  }
+
+  .nav-item {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition-duration: 0.3s;
+
+    &:hover{
+      background-color: white;
+      color: crimson;
+    }
+  }
+
+}
+
+#logout {
+  float: right;
+}
